@@ -24,6 +24,7 @@ z_size = x_size
 taxi_map = mg.Map()
 taxi_map.map_creation(x_size, y_size, z_size)
 d = taxi_map.loc_creation()
+print(d)
 # taxi_map.printmap(-1)
 
 # RGBY: lay-row-column
@@ -107,10 +108,12 @@ class TaxiEnv(discrete.DiscreteEnv):
         num_columns = x_size
         num_lays = z_size
         # Do we really need these rows?
+        # yes!
         max_row = num_rows - 1
         max_col = num_columns - 1
         max_lay = num_lays - 1
         # I feel that we should use 3D matrix here instead of 2D one
+        # May be, i will think about it...
         initial_state_distrib = np.zeros(num_states)
         # pickUp, dropOff, NEW and Up, Down == 8
         num_actions = 8
@@ -191,12 +194,20 @@ class TaxiEnv(discrete.DiscreteEnv):
     def decode(self, i):
         out = []
         out.append(i % 4)
+        print(out, i)
         i = i // 4
         out.append(i % 5)
+        print(out, i)
         i = i // 5
         out.append(i % 5)
+        print(out, i)
+        i = i // 5
+        # Next 3 lines... I'm not really sure
+        out.append(i % 5)
+        print(out, i)
         i = i // 5
         out.append(i)
+        print(out, i)
         assert 0 <= i < 5
         return reversed(out)
 
@@ -205,27 +216,47 @@ class TaxiEnv(discrete.DiscreteEnv):
 
         out = self.desc.copy().tolist()
         out = [[[c.decode('utf-8') for c in line] for line in lay] for lay in out]
-        count = 0
-        for item in out:
-            print(count)
-            count = count + 1
-            for val in item:
-                print(val)
+        # debug
+        #count = 0
+        #for item in out:
+        #    print(count)
+        #    count = count + 1
+        #    for val in item:
+        #        print(val)
+        
+        # self.s ? wtf?
+        # self.s defined in discrete.py
+        print("self.s", self.s)
         taxi_lay, taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
 
         def ul(x): return "_" if x == " " else x
+        print("self.locs", self.locs)
+        # taxi_lay == 0 ALWAYS!!!! WE NEED TO REWRITE DECODE() LOOK AT LINE: 205
+        print("taxi_lay", taxi_lay)
+        print("pass_idx", pass_idx)
+        print("dest_idx", dest_idx)
+        print("self.locs[pass_idx]: lay, row, column", self.locs[pass_idx])
+        print("self.locs[dest_idx]: lay, row, column", self.locs[dest_idx])
         if pass_idx < 4:
-            out[1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
-                out[1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
-            pi, pj = self.locs[pass_idx]
-            out[1 + pi][2 * pj + 1] = utils.colorize(out[1 + pi][2 * pj + 1], 'blue', bold=True)
+            # necessary to rewrite to 3D, taxi_lay + ... (below)
+            out[taxi_lay][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
+                out[taxi_lay][1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
+            # necessary to rewrite to 3D, pk + ... (below)
+            pk, pj, pi = self.locs[pass_idx]
+            print("pk", pk)
+            out[pk][1 + pi][2 * pj + 1] = utils.colorize(out[pk][1 + pi][2 * pj + 1], 'blue', bold=True)
         else:  # passenger in taxi
-            out[1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
-                ul(out[1 + taxi_row][2 * taxi_col + 1]), 'green', highlight=True)
+        # necessary to rewrite to 3D, taxi_lay + ... (below)
+            out[taxi_lay][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
+                ul(out[taxi_lay][1 + taxi_row][2 * taxi_col + 1]), 'green', highlight=True)
 
-        di, dj = self.locs[dest_idx]
-        out[1 + di][2 * dj + 1] = utils.colorize(out[1 + di][2 * dj + 1], 'magenta')
-        outfile.write("\n".join(["".join(row) for row in out]) + "\n")
+        dk, di, dj = self.locs[dest_idx]
+        print("dk", dk)
+        # necessary to rewrite to 3D, dk + ... (below)
+        out[dk][1 + di][2 * dj + 1] = utils.colorize(out[dk][1 + di][2 * dj + 1], 'magenta')
+        # necessary to rewrite to 3D (below)
+        #outfile.write("\n".join(["".join(row) for row in out[taxi_lay]]) + "\n")
+        outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "MoveUp", "MoveDown", "Pickup", "Dropoff"][self.lastaction]))
         else: outfile.write("\n")
@@ -234,6 +265,5 @@ class TaxiEnv(discrete.DiscreteEnv):
         if mode != 'human':
             with closing(outfile):
                 return outfile.getvalue()
-
 
 print('taxi.py launched successfully')

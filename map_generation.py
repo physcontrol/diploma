@@ -49,7 +49,8 @@ class Map:
 
     def loc_creation(self):
         row_size = self.y_size
-        col_size = 2 * self.x_size - 1
+        #col_size = 2 * self.x_size - 1
+        col_size = self.x_size
         h_size = self.z_size
         count = -1
         # Locations RGYB for each lay
@@ -62,14 +63,14 @@ class Map:
             for c in colors:
                 lay, row, col = d[c]
                 if lay == count:
-                    item[row] = item[row][:col] + c + item[row][col + 1:]
+                    item[row] = item[row][:2*col+1] + c + item[row][2*col+1 + 1:]
         return d
 
     def getRandom(self, h_size, row_size, col_size):
         import random
         lay = random.randrange(1, h_size, 1)
         row = random.randrange(1, row_size, 1)
-        column = random.randrange(1, col_size, 2)
+        column = random.randrange(1, col_size, 1)
         return lay, row, column
 
     def printmap(self, layer):
