@@ -3,7 +3,8 @@ from contextlib import closing
 from six import StringIO
 from gym import utils
 from gym.envs.toy_text import discrete
-from gym.envs.toy_text import map_generation as mg
+#from gym.envs.toy_text import map_generation as mg
+import map_generation as mg
 import numpy as np
 
 MAP_default = [
@@ -90,7 +91,7 @@ class TaxiEnv(discrete.DiscreteEnv):
     metadata = {'render.modes': ['human', 'ansi']}
 
     def __init__(self):
-        print(taxi_map.MAP)
+        #print(taxi_map.printmap(3))
         self.desc = np.asarray(taxi_map.MAP, dtype='c')
         # self.desc = np.ndarray(shape=taxi_map.shape(), dtype='c', buffer=taxi_map.MAP)
         # print(self.desc)
@@ -166,7 +167,6 @@ class TaxiEnv(discrete.DiscreteEnv):
                                         new_pass_idx = self.locs.index(taxi_loc)
                                     else:  # dropoff at wrong location
                                         reward = -10
-
                                 new_state = self.encode(
                                     new_lay, new_row, new_col, new_pass_idx, dest_idx)
                                 P[state][action].append(
@@ -204,8 +204,13 @@ class TaxiEnv(discrete.DiscreteEnv):
         outfile = StringIO() if mode == 'ansi' else sys.stdout
 
         out = self.desc.copy().tolist()
-        # print(out)
-        out = [[c.decode('utf-8') for c in line] for line in out]
+        out = [[[c.decode('utf-8') for c in line] for line in lay] for lay in out]
+        count = 0
+        for item in out:
+            print(count)
+            count = count + 1
+            for val in item:
+                print(val)
         taxi_lay, taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
 
         def ul(x): return "_" if x == " " else x
@@ -222,7 +227,7 @@ class TaxiEnv(discrete.DiscreteEnv):
         out[1 + di][2 * dj + 1] = utils.colorize(out[1 + di][2 * dj + 1], 'magenta')
         outfile.write("\n".join(["".join(row) for row in out]) + "\n")
         if self.lastaction is not None:
-            outfile.write("  ({})\n".format(["South", "North", "East", "West", "Pickup", "Dropoff"][self.lastaction]))
+            outfile.write("  ({})\n".format(["South", "North", "East", "West", "MoveUp", "MoveDown", "Pickup", "Dropoff"][self.lastaction]))
         else: outfile.write("\n")
 
         # No need to return anything for human
