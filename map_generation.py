@@ -80,3 +80,13 @@ class Map:
                 print(count)
                 for it in item:
                     print(it)
+        else:
+            for row in range(0, self.y_size+2):
+                print(self.MAP[layer][row])
+
+    def shape(self):
+        # print([self.x_size, self.y_size, self.z_size])
+        return self.x_size+2, self.y_size+2, self.z_size+2
+
+    def volume(self):
+        return self.x_size*self.y_size*self.z_size
