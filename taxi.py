@@ -223,15 +223,16 @@ class TaxiEnv(discrete.DiscreteEnv):
         #    count = count + 1
         #    for val in item:
         #        print(val)
-        
+
         # self.s ? wtf?
         # self.s defined in discrete.py
         print("self.s", self.s)
         taxi_lay, taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
-
         def ul(x): return "_" if x == " " else x
         print("self.locs", self.locs)
         # taxi_lay == 0 ALWAYS!!!! WE NEED TO REWRITE DECODE() LOOK AT LINE: 205
+        print("taxi_row", taxi_row)
+        print("taxi_col", taxi_col)
         print("taxi_lay", taxi_lay)
         print("pass_idx", pass_idx)
         print("dest_idx", dest_idx)
@@ -239,24 +240,38 @@ class TaxiEnv(discrete.DiscreteEnv):
         print("self.locs[dest_idx]: lay, row, column", self.locs[dest_idx])
         if pass_idx < 4:
             # necessary to rewrite to 3D, taxi_lay + ... (below)
-            out[taxi_lay][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
-                out[taxi_lay][1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
+            out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
+                out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
             # necessary to rewrite to 3D, pk + ... (below)
             pk, pj, pi = self.locs[pass_idx]
             print("pk", pk)
-            out[pk][1 + pi][2 * pj + 1] = utils.colorize(out[pk][1 + pi][2 * pj + 1], 'blue', bold=True)
+            print("pi", pi)
+            print("pj", pj)
+            #pj is columns, we need use 2*pj + 1(because we have ":")
+            #but pk, pi values in [1,5]
+            out[pk][pi][2 * pj + 1] = utils.colorize(out[pk][pi][2 * pj + 1], 'blue', bold=True)
+            #old version below
+            #out[pk + 1][1 + pi][2 * pj + 1] = utils.colorize(out[pk + 1][1 + pi][2 * pj + 1], 'blue', bold=True)
         else:  # passenger in taxi
         # necessary to rewrite to 3D, taxi_lay + ... (below)
-            out[taxi_lay][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
-                ul(out[taxi_lay][1 + taxi_row][2 * taxi_col + 1]), 'green', highlight=True)
+            out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
+                ul(out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1]), 'green', highlight=True)
 
         dk, di, dj = self.locs[dest_idx]
         print("dk", dk)
+        print("di", di)
+        print("dj", dj)
         # necessary to rewrite to 3D, dk + ... (below)
-        out[dk][1 + di][2 * dj + 1] = utils.colorize(out[dk][1 + di][2 * dj + 1], 'magenta')
+        #dj is columns, we need use 2*pj + 1(because we have ":")
+        #but dk, di values in [1,5]
+        out[dk][di][2 * dj + 1] = utils.colorize(out[dk][di][2 * dj + 1], 'magenta')
+        #old version below
+        #out[dk][1 + di][2 * dj + 1] = utils.colorize(out[dk][1 + di][2 * dj + 1], 'magenta')
         # necessary to rewrite to 3D (below)
         #outfile.write("\n".join(["".join(row) for row in out[taxi_lay]]) + "\n")
         outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
+        #for item in out:
+        #    outfile.write("\n".join(["".join(row) for row in item]) + "\n")
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "MoveUp", "MoveDown", "Pickup", "Dropoff"][self.lastaction]))
         else: outfile.write("\n")
