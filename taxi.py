@@ -182,7 +182,7 @@ class TaxiEnv(discrete.DiscreteEnv):
         # (5) 5, 5, 4
         i = taxi_lay
         i *= 5
-        i = taxi_row
+        i += taxi_row
         i *= 5
         i += taxi_col
         i *= 5
@@ -269,9 +269,9 @@ class TaxiEnv(discrete.DiscreteEnv):
         #out[dk][1 + di][2 * dj + 1] = utils.colorize(out[dk][1 + di][2 * dj + 1], 'magenta')
         # necessary to rewrite to 3D (below)
         #outfile.write("\n".join(["".join(row) for row in out[taxi_lay]]) + "\n")
-        outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
-        #for item in out:
-        #    outfile.write("\n".join(["".join(row) for row in item]) + "\n")
+        #outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
+        for item in out:
+            outfile.write("\n".join(["".join(row) for row in item]) + "\n")
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "MoveUp", "MoveDown", "Pickup", "Dropoff"][self.lastaction]))
         else: outfile.write("\n")
