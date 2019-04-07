@@ -1,6 +1,8 @@
 import sys
 from contextlib import closing
 from six import StringIO
+import os
+import time
 from gym import utils
 from gym.envs.toy_text import discrete
 #from gym.envs.toy_text import map_generation as mg
@@ -107,7 +109,7 @@ class TaxiEnv(discrete.DiscreteEnv):
 
         for c in colors:
             self.locs.append(d[c])
-        print(self.desc)
+        #print(self.desc)
 
         # num_states for 3D, 2D is 5 times lower
         num_states = taxi_map.volume()*5*4
@@ -140,10 +142,10 @@ class TaxiEnv(discrete.DiscreteEnv):
                             for action in range(num_actions):
                                 # defaults
                                 new_lay, new_row, new_col, new_pass_idx = lay, row, col, pass_idx
-                                # default reward when there is no pickup/dropoff
+                                ### default reward when there is no pickup/dropoff
                                 # lay_reward is hashmap, which created above
-                                reward = lay_reward[lay]
-                                #reward = -1
+                                #reward = lay_reward[lay]
+                                reward = -1
                                 done = False
                                 taxi_loc = (lay, row, col)
                                 # 0 - south
@@ -222,7 +224,7 @@ class TaxiEnv(discrete.DiscreteEnv):
         out = [[[c.decode('utf-8') for c in line] for line in lay] for lay in out]
         taxi_lay, taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
         def ul(x): return "_" if x == " " else x
-
+        '''
         print("taxi_row", taxi_row)
         print("taxi_col", taxi_col)
         print("taxi_lay", taxi_lay)
@@ -230,15 +232,18 @@ class TaxiEnv(discrete.DiscreteEnv):
         print("dest_idx", dest_idx)
         print("self.locs[pass_idx]: lay, row, column", self.locs[pass_idx])
         print("self.locs[dest_idx]: lay, row, column", self.locs[dest_idx])
+        '''
         if pass_idx < 4:
             # necessary to rewrite to 3D, taxi_lay + ... (below)
             out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
                 out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
             # necessary to rewrite to 3D, pk + ... (below)
             pk, pj, pi = self.locs[pass_idx]
+            '''
             print("pk", pk)
             print("pi", pi)
             print("pj", pj)
+            '''
             #pj is columns, we need use 2*pj + 1(because we have ":")
             #but pk, pi values in [1,5]
             out[pk][pi][2 * pj + 1] = utils.colorize(out[pk][pi][2 * pj + 1], 'blue', bold=True)
@@ -250,9 +255,11 @@ class TaxiEnv(discrete.DiscreteEnv):
                 ul(out[taxi_lay + 1][1 + taxi_row][2 * taxi_col + 1]), 'green', highlight=True)
 
         dk, di, dj = self.locs[dest_idx]
+        '''
         print("dk", dk)
         print("di", di)
         print("dj", dj)
+        '''
         # necessary to rewrite to 3D, dk + ... (below)
         #dj is columns, we need use 2*pj + 1(because we have ":")
         #but dk, di values in [1,5]
@@ -263,18 +270,22 @@ class TaxiEnv(discrete.DiscreteEnv):
         #outfile.write("\n".join(["".join(row) for row in out[taxi_lay]]) + "\n")
         #outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
         #print only lay with taxi
-        print("TAXI: LAY, ROW, COLUMN: ", taxi_lay, taxi_row, taxi_col)
+        time.sleep(0.5)
+        os.system('cls||clear')
+        print("TAXI:")
+        print("LAY: ", taxi_lay)
+        print("ROW: ", taxi_row)
+        print("COLUMN: ", taxi_col)
         outfile.write("\n".join(["".join(row) for row in out[taxi_lay + 1]]) + "\n")
         # print all lays below
-        print("ALL LAYS")
-        for item in out:
-            outfile.write("\n".join(["".join(row) for row in item]) + "\n")
-        print("SELF_LASTACTION: ", self.lastaction)
+        #print("ALL LAYS")
+        #for item in out:
+        #    outfile.write("\n".join(["".join(row) for row in item]) + "\n")
+        #print("SELF_LASTACTION: ", self.lastaction)
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "MoveUp", "MoveDown", "Pickup", "Dropoff"][self.lastaction]))
         else:
             outfile.write("\n")
-
         # No need to return anything for human
         if mode != 'human':
             with closing(outfile):
