@@ -21,6 +21,13 @@ x_size = 5
 y_size = x_size
 z_size = x_size
 
+lay_reward = {0: -z_size}
+counter = -1
+for a in range(z_size,0,-1):
+    lay_reward[a] = counter
+    counter = counter - 1
+print(lay_reward)
+
 taxi_map = mg.Map()
 taxi_map.map_creation(x_size, y_size, z_size)
 d = taxi_map.loc_creation()
@@ -133,7 +140,10 @@ class TaxiEnv(discrete.DiscreteEnv):
                             for action in range(num_actions):
                                 # defaults
                                 new_lay, new_row, new_col, new_pass_idx = lay, row, col, pass_idx
-                                reward = -1  # default reward when there is no pickup/dropoff
+                                # default reward when there is no pickup/dropoff
+                                # lay_reward is hashmap, which created above
+                                reward = lay_reward[lay]
+                                #reward = -1
                                 done = False
                                 taxi_loc = (lay, row, col)
                                 # 0 - south
@@ -194,20 +204,14 @@ class TaxiEnv(discrete.DiscreteEnv):
     def decode(self, i):
         out = []
         out.append(i % 4)
-        print(out, i)
         i = i // 4
         out.append(i % 5)
-        print(out, i)
         i = i // 5
         out.append(i % 5)
-        print(out, i)
         i = i // 5
-        # Next 3 lines... I'm not really sure
         out.append(i % 5)
-        print(out, i)
         i = i // 5
         out.append(i)
-        print(out, i)
         assert 0 <= i < 5
         return reversed(out)
 
@@ -216,21 +220,9 @@ class TaxiEnv(discrete.DiscreteEnv):
 
         out = self.desc.copy().tolist()
         out = [[[c.decode('utf-8') for c in line] for line in lay] for lay in out]
-        # debug
-        #count = 0
-        #for item in out:
-        #    print(count)
-        #    count = count + 1
-        #    for val in item:
-        #        print(val)
-
-        # self.s ? wtf?
-        # self.s defined in discrete.py
-        print("self.s", self.s)
         taxi_lay, taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
         def ul(x): return "_" if x == " " else x
-        print("self.locs", self.locs)
-        # taxi_lay == 0 ALWAYS!!!! WE NEED TO REWRITE DECODE() LOOK AT LINE: 205
+
         print("taxi_row", taxi_row)
         print("taxi_col", taxi_col)
         print("taxi_lay", taxi_lay)
@@ -270,11 +262,18 @@ class TaxiEnv(discrete.DiscreteEnv):
         # necessary to rewrite to 3D (below)
         #outfile.write("\n".join(["".join(row) for row in out[taxi_lay]]) + "\n")
         #outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
+        #print only lay with taxi
+        print("TAXI: LAY, ROW, COLUMN: ", taxi_lay, taxi_row, taxi_col)
+        outfile.write("\n".join(["".join(row) for row in out[taxi_lay + 1]]) + "\n")
+        # print all lays below
+        print("ALL LAYS")
         for item in out:
             outfile.write("\n".join(["".join(row) for row in item]) + "\n")
+        print("SELF_LASTACTION: ", self.lastaction)
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "MoveUp", "MoveDown", "Pickup", "Dropoff"][self.lastaction]))
-        else: outfile.write("\n")
+        else:
+            outfile.write("\n")
 
         # No need to return anything for human
         if mode != 'human':
