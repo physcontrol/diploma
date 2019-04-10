@@ -94,9 +94,7 @@ for episode in range(total_test_episodes):
             print ("Score", total_rewards)
             time.sleep(1)
             break
-        print("new state")
         state = new_state
 env.close()
 print(qtable)
 print ("Score over time: " +  str(sum(rewards)/total_test_episodes))
-

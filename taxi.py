@@ -142,9 +142,9 @@ class TaxiEnv(discrete.DiscreteEnv):
                             for action in range(num_actions):
                                 # defaults
                                 new_lay, new_row, new_col, new_pass_idx = lay, row, col, pass_idx
-                                ### default reward when there is no pickup/dropoff
                                 # lay_reward is hashmap, which created above
                                 #reward = lay_reward[lay]
+                                ### default reward when there is no pickup/dropoff
                                 reward = -1
                                 done = False
                                 taxi_loc = (lay, row, col)
@@ -169,8 +169,10 @@ class TaxiEnv(discrete.DiscreteEnv):
                                 # 6 - pickup
                                 elif action == 6:  # pickup
                                     if (pass_idx < 4) and (taxi_loc == self.locs[pass_idx]):
+                                        #print("passenger not at location")
                                         new_pass_idx = 4
                                     else:  # passenger not at location
+                                        #print("passenger not at location")
                                         reward = -10
                                 # 7 - dropoff
                                 elif action == 7:  # dropoff
@@ -246,7 +248,7 @@ class TaxiEnv(discrete.DiscreteEnv):
             '''
             #pj is columns, we need use 2*pj + 1(because we have ":")
             #but pk, pi values in [1,5]
-            out[pk][pi][2 * pj + 1] = utils.colorize(out[pk][pi][2 * pj + 1], 'blue', bold=True)
+            out[pk + 1][pi + 1][2 * pj + 1] = utils.colorize(out[pk + 1][pi + 1][2 * pj + 1], 'blue', bold=True)
             #old version below
             #out[pk + 1][1 + pi][2 * pj + 1] = utils.colorize(out[pk + 1][1 + pi][2 * pj + 1], 'blue', bold=True)
         else:  # passenger in taxi
@@ -263,7 +265,7 @@ class TaxiEnv(discrete.DiscreteEnv):
         # necessary to rewrite to 3D, dk + ... (below)
         #dj is columns, we need use 2*pj + 1(because we have ":")
         #but dk, di values in [1,5]
-        out[dk][di][2 * dj + 1] = utils.colorize(out[dk][di][2 * dj + 1], 'magenta')
+        out[dk + 1][di + 1][2 * dj + 1] = utils.colorize(out[dk + 1][di + 1][2 * dj + 1], 'magenta')
         #old version below
         #out[dk][1 + di][2 * dj + 1] = utils.colorize(out[dk][1 + di][2 * dj + 1], 'magenta')
         # necessary to rewrite to 3D (below)
@@ -278,7 +280,7 @@ class TaxiEnv(discrete.DiscreteEnv):
         print("COLUMN: ", taxi_col)
         outfile.write("\n".join(["".join(row) for row in out[taxi_lay + 1]]) + "\n")
         # print all lays below
-        #print("ALL LAYS")
+        print("ALL LAYS")
         #for item in out:
         #    outfile.write("\n".join(["".join(row) for row in item]) + "\n")
         #print("SELF_LASTACTION: ", self.lastaction)
