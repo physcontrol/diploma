@@ -84,11 +84,14 @@ for episode in range(total_test_episodes):
         env.render()
         # Take the action (index) that have the maximum expected future reward given that state
         action = np.argmax(qtable[state,:])
-        
+        print("ACTION: ", action)
         new_state, reward, done, info = env.step(action)
         
         total_rewards += reward
-        
+        print("STEP: ", step)
+        print("DONE: ", done)
+        print("INFO: ", info)
+        print("TOTAL REWARD: ", total_rewards)
         if done:
             rewards.append(total_rewards)
             print ("Score", total_rewards)

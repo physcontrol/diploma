@@ -23,18 +23,19 @@ x_size = 5
 y_size = x_size
 z_size = x_size
 
-lay_reward = {0: -z_size}
+lay_reward = {}
 counter = -1
-for a in range(z_size,0,-1):
+for a in range(z_size-1,-1,-1):
     lay_reward[a] = counter
     counter = counter - 1
-print(lay_reward)
+print("LAY REWARD: ", lay_reward)
+time.sleep(3)
 
 taxi_map = mg.Map()
 taxi_map.map_creation(x_size, y_size, z_size)
 d = taxi_map.loc_creation()
 print(d)
-# taxi_map.printmap(-1)
+#taxi_map.printmap(-1)
 
 # RGBY: lay-row-column
 # for key in d:
@@ -43,7 +44,18 @@ colors = ['R', 'G', 'Y', 'B']
 
 # print(taxi_map.shape())
 # print(taxi_map.volume())
+def get_minimum(new_location, limit):
+    boom = False
+    if new_location > limit:
+        return limit, True
+    return new_location, boom
 
+def get_maximum(new_location, limit):
+    boom = False
+    if new_location < limit:
+        return limit, True
+    return new_location, boom
+    
 class TaxiEnv(discrete.DiscreteEnv):
     """
     The Taxi Problem
@@ -99,6 +111,8 @@ class TaxiEnv(discrete.DiscreteEnv):
         (taxi_lay, taxi_row, taxi_col, passenger_location, destination)
     """
     metadata = {'render.modes': ['human', 'ansi']}
+    
+    
 
     def __init__(self):
         #print(taxi_map.printmap(3))
@@ -143,29 +157,59 @@ class TaxiEnv(discrete.DiscreteEnv):
                                 # defaults
                                 new_lay, new_row, new_col, new_pass_idx = lay, row, col, pass_idx
                                 # lay_reward is hashmap, which created above
-                                #reward = lay_reward[lay]
+                                reward = lay_reward[lay]
                                 ### default reward when there is no pickup/dropoff
-                                reward = -1
+                                #reward = -1
                                 done = False
                                 taxi_loc = (lay, row, col)
                                 # 0 - south
                                 if action == 0:
-                                    new_row = min(row + 1, max_row)
+                                    #old version
+                                    #new_row = min(row + 1, max_row)
+                                    #new version
+                                    new_row, boom = get_minimum(row + 1, max_row)
+                                    if boom:
+                                        reward = -10
                                 # 1 - north
                                 elif action == 1:
-                                    new_row = max(row - 1, 0)
+                                    #old version
+                                    #new_row = max(row - 1, 0)
+                                    #new version
+                                    new_row, boom = get_maximum(row - 1, 0)
+                                    if boom:
+                                        reward = -10
                                 # 2 - east
                                 if action == 2 and self.desc[lay, 1 + row, 2 * col + 2] == b":":
-                                    new_col = min(col + 1, max_col)
+                                    #old version
+                                    #new_col = min(col + 1, max_col)
+                                    #new version
+                                    new_col, boom = get_minimum(col + 1, max_col)
+                                    if boom:
+                                        reward = -10
                                 # 3 - west
                                 elif action == 3 and self.desc[lay, 1 + row, 2 * col] == b":":
-                                    new_col = max(col - 1, 0)
+                                    #old version
+                                    #new_col = max(col - 1, 0)
+                                    #new version
+                                    new_col, boom = get_maximum(col - 1, 0)
+                                    if boom:
+                                        reward = -10
                                 # 4 - move up
                                 if action == 4:  # and self.desc[lay, 1 + row, 2 * col + 2] == b":":
-                                    new_lay = min(lay + 1, max_lay)
+                                    #old ersion
+                                    #new_lay = min(lay + 1, max_lay)
+                                    #new ersion
+                                    new_lay, boom = get_minimum(lay + 1, max_lay)
+                                    if boom:
+                                        reward = -10
                                 # 5 - move down
                                 elif action == 5:  # and self.desc[lay, 1 + row, 2 * col] == b":":
-                                    new_lay = max(lay - 1, 0)
+                                    #old version
+                                    #new_lay = max(lay - 1, 0)
+                                    #new version
+                                    new_lay, boom = get_maximum(lay - 1, 0)
+                                    if boom:
+                                        reward = -10
                                 # 6 - pickup
                                 elif action == 6:  # pickup
                                     if (pass_idx < 4) and (taxi_loc == self.locs[pass_idx]):
@@ -179,7 +223,7 @@ class TaxiEnv(discrete.DiscreteEnv):
                                     if (taxi_loc == self.locs[dest_idx]) and pass_idx == 4:
                                         new_pass_idx = dest_idx
                                         done = True
-                                        reward = 20
+                                        reward = 30
                                     elif (taxi_loc in self.locs) and pass_idx == 4:
                                         new_pass_idx = self.locs.index(taxi_loc)
                                     else:  # dropoff at wrong location
@@ -273,14 +317,14 @@ class TaxiEnv(discrete.DiscreteEnv):
         #outfile.write("\n".join(["".join(["".join(row) for row in lay]) for lay in out]) + "\n")
         #print only lay with taxi
         time.sleep(0.5)
-        os.system('cls||clear')
+        os.system('clear')
         print("TAXI:")
         print("LAY: ", taxi_lay)
         print("ROW: ", taxi_row)
         print("COLUMN: ", taxi_col)
         outfile.write("\n".join(["".join(row) for row in out[taxi_lay + 1]]) + "\n")
         # print all lays below
-        print("ALL LAYS")
+        #print("ALL LAYS")
         #for item in out:
         #    outfile.write("\n".join(["".join(row) for row in item]) + "\n")
         #print("SELF_LASTACTION: ", self.lastaction)
@@ -294,3 +338,6 @@ class TaxiEnv(discrete.DiscreteEnv):
                 return outfile.getvalue()
 
 print('taxi.py launched successfully')
+
+
+
