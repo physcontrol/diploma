@@ -11,7 +11,6 @@ from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 from random import shuffle
 
-'''
 class Agent():
     # Agent with a neural network
     def __init__(self, obs_space, action_space):
@@ -144,10 +143,12 @@ def train_table():
 
 def create_agent_weights(q_table):
     # Building model (agent)
-    agent = Agent(500, 6)
+    #agent = Agent(500, 6)
+    agent = Agent(2500, 8)
     
     # Creating weights
-    weights = np.zeros((1, 500, 6))
+    #weights = np.zeros((1, 500, 6))
+    weights = np.zeros((1, 2500, 8))
     best_actions = np.argmax(q_table, axis=1)
     for n in range(0, 500):
         weights[0][n][best_actions[n]] = 1
@@ -305,7 +306,8 @@ def test_agent():
 
 def decode(i):
     # Array of length 500 as one-hot vector
-    state = np.zeros(500)
+    #state = np.zeros(500)
+    state = np.zeros(2500)
     state[i] = 1
     return state
 
@@ -334,9 +336,8 @@ def decode_to_18bit(i):
     return state
 
 
-if __name__ == "__main__":
-    q_table = train_table() # Trains a Q-learning agent
-    create_agent_weights(q_table) # Set neural network agent's weights according to Q-table
-    #train_agent_weigths(q_table) # Use this line to train the weights instead of infering them
-    test_agent() # Test the agent with the neural network
-'''
+#if __name__ == "__main__":
+q_table = train_table() # Trains a Q-learning agent
+create_agent_weights(q_table) # Set neural network agent's weights according to Q-table
+#train_agent_weigths(q_table) # Use this line to train the weights instead of infering them
+test_agent() # Test the agent with the neural network
