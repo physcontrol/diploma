@@ -23,13 +23,36 @@ x_size = 5
 y_size = x_size
 z_size = x_size
 
+#functional that sets of paramenters in accordance with reward
+def functional(inPut):
+    out = 0
+    for val in inPut:
+        out += inPut[val]
+    return out
+
 lay_reward = {}
 counter = -1
 for a in range(z_size-1,-1,-1):
     lay_reward[a] = counter
     counter = counter - 1
 print("LAY REWARD: ", lay_reward)
-time.sleep(3)
+time.sleep(1)
+
+cell_reward = np.zeros((x_size, y_size, z_size))
+for z, lay in enumerate(cell_reward):
+    #we need to rewrite this part for getting more paramters( Density and Wind, for example)
+    struct = {
+        'Lay Reward': lay_reward[z],
+        'Density': 0,
+        'Wind': 0,
+        }
+    for y, col in enumerate(lay):
+        for x, row in enumerate(col):
+            result = functional(struct)
+            cell_reward[z][y][x] = result
+            #print(x,y,z, row)
+print(cell_reward)
+time.sleep(4)
 
 taxi_map = mg.Map()
 taxi_map.map_creation(x_size, y_size, z_size)
@@ -157,9 +180,10 @@ class TaxiEnv(discrete.DiscreteEnv):
                                 # defaults
                                 new_lay, new_row, new_col, new_pass_idx = lay, row, col, pass_idx
                                 # lay_reward is hashmap, which created above
-                                reward = lay_reward[lay]
+                                #reward = lay_reward[lay]
                                 ### default reward when there is no pickup/dropoff
                                 #reward = -1
+                                reward = cell_reward[lay][col][row]
                                 done = False
                                 taxi_loc = (lay, row, col)
                                 # 0 - south
