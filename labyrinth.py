@@ -44,6 +44,7 @@ for z, lay in enumerate(cell_reward):
     struct = {
         'Lay Reward': lay_reward[z],
         'Density': 0,
+        'Pressure': 0,
         'Wind': 0,
         }
     for y, col in enumerate(lay):
@@ -134,8 +135,6 @@ class TaxiEnv(discrete.DiscreteEnv):
         (taxi_lay, taxi_row, taxi_col, passenger_location, destination)
     """
     metadata = {'render.modes': ['human', 'ansi']}
-    
-    
 
     def __init__(self):
         #print(taxi_map.printmap(3))
@@ -203,7 +202,7 @@ class TaxiEnv(discrete.DiscreteEnv):
                                     if boom:
                                         reward = -10
                                 # 2 - east
-                                if action == 2 and self.desc[lay, 1 + row, 2 * col + 2] == b":":
+                                if action == 2 #and self.desc[lay, 1 + row, 2 * col + 2] == b":":
                                     #old version
                                     #new_col = min(col + 1, max_col)
                                     #new version
@@ -211,7 +210,7 @@ class TaxiEnv(discrete.DiscreteEnv):
                                     if boom:
                                         reward = -10
                                 # 3 - west
-                                elif action == 3 and self.desc[lay, 1 + row, 2 * col] == b":":
+                                elif action == 3 #and self.desc[lay, 1 + row, 2 * col] == b":":
                                     #old version
                                     #new_col = max(col - 1, 0)
                                     #new version

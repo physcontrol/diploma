@@ -101,7 +101,7 @@ def train_table():
     env = gym.make('Taxi-v2')
     agent = TableAgent(env.action_space.n, env.observation_space.n)
 
-    num_episodes = 10000
+    num_episodes = 50000
     avg_rewards = deque(maxlen=num_episodes)
     best_avg_reward = -math.inf
     recent_rewards = deque(maxlen=100)
@@ -134,9 +134,9 @@ def train_table():
         print("\rEpisode {:05d}, epsilon = {:.3f}, best average = {:.3f}".format(
             i_episode, agent.epsilon, best_avg_reward), "")
 
-        if best_avg_reward >= 9.7:
-            print('\nEnvironment solved in {} episodes.'.format(i_episode), "")
-            break
+        #if best_avg_reward >= 9.7:
+        #    print('\nEnvironment solved in {} episodes.'.format(i_episode), "")
+        #    break
 
     return agent.q_table
 
@@ -151,6 +151,7 @@ def create_agent_weights(q_table):
     weights = np.zeros((1, 2500, 8))
     best_actions = np.argmax(q_table, axis=1)
     for n in range(0, 500):
+    #for n in range(0, 2500):
         weights[0][n][best_actions[n]] = 1
 
     # Setting and saving the weights
@@ -167,13 +168,16 @@ def train_agent_weights(q_table):
     batch_size = 16
 
     # Building model/agent
-    agent = Agent(500, 6)
+    agent = Agent(2500, 8)
+    #agent = Agent(500, 6)
 
     # Creating data
     x_train = np.array([decode(i) for i in range(0,500)])
     best_actions = np.argmax(q_table, axis=1)
-    y_train = np.zeros((500,6))
-    for n in range(500):
+    #y_train = np.zeros((500,6))
+    y_train = np.zeros((2500,8))
+    #for n in range(500):
+    for n in range(2500):
         y_train[n][best_actions[n]]= 1
 
     # Train the model
@@ -321,6 +325,8 @@ def decode_to_18bit(i):
     out.append(i % 5)
     i = i // 5
     out.append(i % 5)
+    i = i // 5
+    out.append(i)
     i = i // 5
     out.append(i)
     assert 0 <= i < 5
