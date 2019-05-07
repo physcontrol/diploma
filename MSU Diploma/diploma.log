@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.4)  6 MAY 2019 20:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.4)  7 MAY 2019 15:45
 entering extended mode
 **./diploma.tex
 (diploma.tex
@@ -857,6 +857,12 @@ Underfull \hbox (badness 1721) in paragraph at lines 118--119
  []
 
 
+Underfull \hbox (badness 3386) in paragraph at lines 118--119
+\T2A/ccr/m/n/12 наи-боль-шее ито-го-вое воз-на-граж-де-ние. ѕе-ре-чис-лен-ные к
+он-цеп-ции
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 118--119
 
  []
@@ -896,8 +902,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 171--172
 
  []
 
-[5] [6] [7] [8] [9]
-LaTeX Font Info:    Try loading font information for OMS+ccr on input line 226.
+[5]
+<dronebw.jpg, id=50, 203.25937pt x 180.675pt>
+File: dronebw.jpg Graphic file (type jpg)
+<use dronebw.jpg>
+Package pdftex.def Info: dronebw.jpg  used on input line 185.
+(pdftex.def)             Requested size: 121.95656pt x 108.40582pt.
+
+Underfull \hbox (badness 1253) in paragraph at lines 189--190
+\T2A/ccr/m/n/12 (ис-пы-та-тель-ной сре-де, ла-би-рин-те). «а-да-чей аген-та €в-
+л€-ет-с€ сбор
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
+
+ []
+
+[6 <./dronebw.jpg>]
+
+LaTeX Warning: Command \cyri invalid in math mode on input line 220.
+
+Missing character: There is no и in font ccr10!
+[7] [8]
+LaTeX Font Info:    Try loading font information for OMS+ccr on input line 229.
 
 
 ("C:\Users\Igor Zavgorodniy\AppData\Local\Programs\MiKTeX 2.9\tex/latex/concmat
@@ -905,39 +933,39 @@ h\omsccr.fd"
 File: omsccr.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
 )
 LaTeX Font Info:    Font shape `OMS/ccr/m/n' in size <12> not available
-(Font)              Font shape `OMS/ccsy/m/n' tried instead on input line 226.
- [10] [11] [12] (diploma.aux) ) 
+(Font)              Font shape `OMS/ccsy/m/n' tried instead on input line 229.
+ [9] [10] [11] (diploma.aux) ) 
 Here is how much of TeX's memory you used:
- 5887 strings out of 492945
- 85687 string characters out of 3121367
- 168484 words of memory out of 3000000
- 9623 multiletter control sequences out of 15000+200000
+ 5894 strings out of 492945
+ 85781 string characters out of 3121367
+ 166484 words of memory out of 3000000
+ 9628 multiletter control sequences out of 15000+200000
  21809 words of font info for 57 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,7n,45p,3078b,290s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX
-\2.9\fonts/pk/ljfour/public/concmath-fonts/dpi600\xccsy6.pk> <C:\Users\Igor Zav
-gorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/concmath-fonts/dpi600\
-xccex10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour
-/lh/lh-t2a/dpi720\laoti10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2
-.9\fonts/pk/ljfour/public/concmath-fonts/dpi720\xccsy10.pk> <C:\Users\Igor Zavg
-orodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/concrete/dpi600\ccr8.pk
-> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/co
-ncmath-fonts/dpi600\xccsy8.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\
-2.9\fonts/pk/ljfour/public/concmath-fonts/dpi600\xccmi8.pk> <C:\Users\Igor Zavg
-orodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/concmath-fonts/dpi720\x
-ccmi10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/
-public/concrete/dpi720\ccr10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTe
-X\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx2488.pk> <C:\Users\Igor Zavgorodniy\
-AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1728.pk> <C:\User
-s\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi720\la
-orm10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/l
-h/lh-t2a/dpi600\labx1440.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.
-9\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx2074.pk> <C:\Users\Igor Zavgorodniy\AppD
-ata\Local\MiKTeX\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi864\laorm10.pk>
-Output written on diploma.pdf (13 pages, 178971 bytes).
+ <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\
+2.9\fonts/pk/ljfour/public/concmath-fonts/dpi600\xccsy6.pk> <C:\Users\Igor Zavg
+orodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/concmath-fonts/dpi600\x
+ccex10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/
+lh/lh-t2a/dpi720\laoti10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.
+9\fonts/pk/ljfour/public/concmath-fonts/dpi720\xccsy10.pk> <C:\Users\Igor Zavgo
+rodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/concrete/dpi600\ccr8.pk>
+ <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/con
+cmath-fonts/dpi600\xccsy8.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2
+.9\fonts/pk/ljfour/public/concmath-fonts/dpi600\xccmi8.pk> <C:\Users\Igor Zavgo
+rodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/concmath-fonts/dpi720\xc
+cmi10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/p
+ublic/concrete/dpi720\ccr10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX
+\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx2488.pk> <C:\Users\Igor Zavgorodniy\A
+ppData\Local\MiKTeX\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1728.pk> <C:\Users
+\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi720\lao
+rm10.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/lh
+/lh-t2a/dpi600\labx1440.pk> <C:\Users\Igor Zavgorodniy\AppData\Local\MiKTeX\2.9
+\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx2074.pk> <C:\Users\Igor Zavgorodniy\AppDa
+ta\Local\MiKTeX\2.9\fonts/pk/ljfour/lh/lh-t2a/dpi864\laorm10.pk>
+Output written on diploma.pdf (12 pages, 219682 bytes).
 PDF statistics:
- 437 PDF objects out of 1000 (max. 8388607)
+ 468 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
