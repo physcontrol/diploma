@@ -4,6 +4,8 @@ import gym
 import random
 import time
 import os
+import matplotlib
+matplotlib.use("agg")
 import matplotlib.pyplot as plt
 
 env = gym.make("Taxi-v2")
