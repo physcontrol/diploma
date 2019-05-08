@@ -1,8 +1,10 @@
 import numpy as np
+import scipy as sp
 import gym
 import random
 import time
 import os
+import matplotlib.pyplot as plt
 
 env = gym.make("Taxi-v2")
 env.render()
@@ -20,7 +22,7 @@ total_episodes = 50000        # Total episodes
 total_test_episodes = 100     # Total test episodes
 max_steps = 99                # Max steps per episode
 
-learning_rate = 0.7           # Learning rate
+alpha = 0.7           # Learning rate
 gamma = 0.618                 # Discounting rate
 
 # Exploration parameters
@@ -29,6 +31,8 @@ max_epsilon = 1.0             # Exploration probability at start
 min_epsilon = 0.01            # Minimum exploration probability
 decay_rate = 0.01
 
+score_ov_time =[]
+x_steps = []
 # 2 For life or until learning is stopped
 for episode in range(total_episodes):
     # Reset the environment
@@ -52,8 +56,8 @@ for episode in range(total_episodes):
         # Take the action (a) and observe the outcome state(s') and reward (r)
         new_state, reward, done, info = env.step(action)
 
-        # Update Q(s,a):= Q(s,a) + lr [R(s,a) + gamma * max Q(s',a') - Q(s,a)]
-        qtable[state, action] = qtable[state, action] + learning_rate * (reward + gamma * 
+        # Update Q(s,a):= Q(s,a) + alpha [R(s,a) + gamma * max Q(s',a') - Q(s,a)]
+        qtable[state, action] = qtable[state, action] + alpha * (reward + gamma * 
                                     np.max(qtable[new_state, :]) - qtable[state, action])
                 
         # Our new state is state
@@ -71,6 +75,7 @@ rewards = []
 
 for episode in range(total_test_episodes):
     state = env.reset()
+    x_steps.append(episode / total_test_episodes)
     step = 0
     done = False
     total_rewards = 0
@@ -95,9 +100,22 @@ for episode in range(total_test_episodes):
         if done:
             rewards.append(total_rewards)
             print ("Score", total_rewards)
+            score_ov_time.append(total_rewards)
             time.sleep(1)
             break
         state = new_state
 env.close()
 print(qtable)
 print ("Score over time: " +  str(sum(rewards)/total_test_episodes))
+# For graphics
+'''
+poly = sp.polyfit(x_steps, score_ov_time, 1)
+pol_1d = sp.poly1d(poly)
+line_1, line_2 = plt.plot(x_steps, score_ov_time, 'b:', x_steps, pol_1d(x_steps), 'r.:')
+plt.legend((line_1, line_2), (u'Result', u'Linear Approximation'), loc='best')
+# plt.title('Task 1')
+plt.xlabel('Time')
+plt.ylabel('Total score')
+plt.grid()
+plt.show()
+'''
