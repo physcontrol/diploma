@@ -5,30 +5,33 @@ import random
 import time
 import os
 import matplotlib
-matplotlib.use("agg")
+#matplotlib.use("agg")
 import matplotlib.pyplot as plt
 
 env = gym.make("Taxi-v2")
 env.render()
 
 action_size = env.action_space.n
-print("Action size ", action_size)
+#print("Action size ", action_size)
 
 state_size = env.observation_space.n
-print("State size ", state_size)
+#print("State size ", state_size)
 
 qtable = np.zeros((state_size, action_size))
-print(qtable)
+#print(qtable)
 
 total_episodes = 50000        # Total episodes
-total_test_episodes = 100     # Total test episodes
+total_test_episodes = 200     # Total test episodes
 max_steps = 99                # Max steps per episode
 
-alpha = 0.7           # Learning rate
-gamma = 0.618                 # Discounting rate
+#0 < ... <= 1
+alpha = 0.77                   # Learning rate
+#gamma = 0.618                 # Discounting rate
+gamma = 0.86                 # Discounting rate
 
 # Exploration parameters
 epsilon = 1.0                 # Exploration rate
+
 max_epsilon = 1.0             # Exploration probability at start
 min_epsilon = 0.01            # Minimum exploration probability
 decay_rate = 0.01
@@ -75,49 +78,54 @@ for episode in range(total_episodes):
 env.reset()
 rewards = []
 
+def plotting(action, step, done, info):
+    print("ACTION: ", action)
+    print("STEP: ", step)
+    print("DONE: ", done)
+    print("INFO: ", info)
+    print("TOTAL REWARD: ", total_rewards)
+
 for episode in range(total_test_episodes):
     state = env.reset()
     x_steps.append(episode / total_test_episodes)
     step = 0
     done = False
     total_rewards = 0
-    os.system("clc||clear")
-    time.sleep(1)
-    print("****************************************************")
-    print("EPISODE ", episode)
+    #os.system("clc||clear")
+    #time.sleep(1)
+    #print("****************************************************")
+    #print("EPISODE ", episode)
 
     for step in range(max_steps):
         # UNCOMMENT IT IF YOU WANT TO SEE OUR AGENT PLAYING
-        env.render()
+        # env.render()
         # Take the action (index) that have the maximum expected future reward given that state
         action = np.argmax(qtable[state,:])
-        print("ACTION: ", action)
         new_state, reward, done, info = env.step(action)
-        
         total_rewards += reward
-        print("STEP: ", step)
-        print("DONE: ", done)
-        print("INFO: ", info)
-        print("TOTAL REWARD: ", total_rewards)
+        #plotting(action, step, done, info)
         if done:
             rewards.append(total_rewards)
-            print ("Score", total_rewards)
-            score_ov_time.append(total_rewards)
-            time.sleep(1)
+            #print ("Score", total_rewards)
+            #score_ov_time.append(total_rewards)
+            #time.sleep(1)
             break
         state = new_state
+    score_ov_time.append(total_rewards)
 env.close()
-print(qtable)
+#print(qtable)
 print ("Score over time: " +  str(sum(rewards)/total_test_episodes))
 # For graphics
-'''
+#print(len(x_steps), len(score_ov_time))
 poly = sp.polyfit(x_steps, score_ov_time, 1)
 pol_1d = sp.poly1d(poly)
-line_1, line_2 = plt.plot(x_steps, score_ov_time, 'b:', x_steps, pol_1d(x_steps), 'r.:')
-plt.legend((line_1, line_2), (u'Result', u'Linear Approximation'), loc='best')
-# plt.title('Task 1')
-plt.xlabel('Time')
-plt.ylabel('Total score')
+line_1, line_2 = plt.plot(x_steps, score_ov_time, 'b:', x_steps, pol_1d(x_steps), 'r--')
+plt.legend((line_1, line_2), (u'Result', u'Linear Approximation'), loc='upper left')
+#plt.title('Зависимость суммарного вознаграждения от пройденного времени\n при N='+str(total_episodes) + ', gamma=' + str(gamma)+', alpha='+str(alpha)+', epsilon='+str(round(epsilon,2)), fontsize=10)
+plt.xlabel('Время', fontsize=10)
+plt.ylabel('Суммарное вознаграждение', fontsize=10)
+graphic_name = 'test'
+#graphic_name = 'withoutlayreward_N' + str(total_episodes)+ 'gamma' + str(gamma)+ 'alpha'+str(alpha)+'epsilon'+str(epsilon)
 plt.grid()
+plt.savefig(graphic_name)
 plt.show()
-'''
