@@ -20,14 +20,14 @@ state_size = env.observation_space.n
 qtable = np.zeros((state_size, action_size))
 #print(qtable)
 
-total_episodes = 50000        # Total episodes
+total_episodes = 5000        # Total episodes
 total_test_episodes = 200     # Total test episodes
 max_steps = 99                # Max steps per episode
 
 #0 < ... <= 1
-alpha = 0.77                   # Learning rate
+alpha = 0.63                   # Learning rate
 #gamma = 0.618                 # Discounting rate
-gamma = 0.86                 # Discounting rate
+gamma = 1.0                  # Discounting rate
 
 # Exploration parameters
 epsilon = 1.0                 # Exploration rate
@@ -124,7 +124,7 @@ plt.legend((line_1, line_2), (u'Result', u'Linear Approximation'), loc='upper le
 #plt.title('Зависимость суммарного вознаграждения от пройденного времени\n при N='+str(total_episodes) + ', gamma=' + str(gamma)+', alpha='+str(alpha)+', epsilon='+str(round(epsilon,2)), fontsize=10)
 plt.xlabel('Время', fontsize=10)
 plt.ylabel('Суммарное вознаграждение', fontsize=10)
-graphic_name = 'test'
+graphic_name = 'withoutlayreward2_gamma1,0'
 #graphic_name = 'withoutlayreward_N' + str(total_episodes)+ 'gamma' + str(gamma)+ 'alpha'+str(alpha)+'epsilon'+str(epsilon)
 plt.grid()
 plt.savefig(graphic_name)
