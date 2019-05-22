@@ -1,6 +1,5 @@
 colors = ['R', 'G', 'Y', 'B']
 
-
 class Map:
     def __init__(self):
         self.size = []
@@ -24,7 +23,6 @@ class Map:
                             new_str += "+"
                         else:
                             new_str += "-"
-
                     if (k == 0) or (k == self.z_size+1):
                         if (j != 0) and (j != self.y_size + 1):
                             if(i == 0) or (i == 2*self.x_size):
@@ -34,7 +32,6 @@ class Map:
                                     new_str += "-"
                                 else:
                                     new_str += "|"
-
                     if (k != 0) and (k != self.z_size+1):
                         if (j != 0) and (j != self.y_size + 1):
                             if(i == 0) or (i == 2*self.x_size):
@@ -49,13 +46,14 @@ class Map:
 
     def loc_creation(self):
         row_size = self.y_size
-        #col_size = 2 * self.x_size - 1
         col_size = self.x_size
         h_size = self.z_size
         count = -1
-        # Locations RGYB for each lay
-        d = dict(R=Map.getRandom(self, h_size, row_size, col_size), G=Map.getRandom(self, h_size, row_size, col_size),
-                B=Map.getRandom(self, h_size, row_size, col_size), Y=Map.getRandom(self, h_size, row_size, col_size))
+        randomR = Map.getRandom(self, h_size, row_size, col_size)
+        randomG = Map.getRandom(self, h_size, row_size, col_size)
+        randomY = Map.getRandom(self, h_size, row_size, col_size)
+        randomB = Map.getRandom(self, h_size, row_size, col_size)
+        d = dict(R=randomR, G=randomG, B=randomB, Y=randomY)
         for item in self.MAP:
             count = count + 1
             if count == 0 or count == len(self.MAP) - 1:
@@ -86,7 +84,6 @@ class Map:
                 print(self.MAP[layer][row])
 
     def shape(self):
-        # print([self.x_size, self.y_size, self.z_size])
         return self.x_size+2, self.y_size+2, self.z_size+2
 
     def volume(self):

@@ -5,29 +5,23 @@ import random
 import time
 import os
 import matplotlib
-#matplotlib.use("agg")
 import matplotlib.pyplot as plt
 
 env = gym.make("Taxi-v2")
 env.render()
 
 action_size = env.action_space.n
-#print("Action size ", action_size)
-
 state_size = env.observation_space.n
-#print("State size ", state_size)
 
 qtable = np.zeros((state_size, action_size))
-#print(qtable)
 
-total_episodes = 5000        # Total episodes
+total_episodes = 50000        # Total episodes
 total_test_episodes = 200     # Total test episodes
 max_steps = 99                # Max steps per episode
 
 #0 < ... <= 1
 alpha = 0.63                   # Learning rate
-#gamma = 0.618                 # Discounting rate
-gamma = 1.0                  # Discounting rate
+gamma = 0.75                  # Discounting rate
 
 # Exploration parameters
 epsilon = 1.0                 # Exploration rate
@@ -38,7 +32,6 @@ decay_rate = 0.01
 
 score_ov_time =[]
 x_steps = []
-# 2 For life or until learning is stopped
 for episode in range(total_episodes):
     # Reset the environment
     state = env.reset()
@@ -46,8 +39,7 @@ for episode in range(total_episodes):
     done = False
     
     for step in range(max_steps):
-        # 3. Choose an action a in the current world state (s)
-        ## First we randomize a number
+        ##randomize a number
         exp_exp_tradeoff = random.uniform(0,1)
         
         ## If this number > greater than epsilon --> exploitation (taking the biggest Q value for this state)
@@ -65,7 +57,7 @@ for episode in range(total_episodes):
         qtable[state, action] = qtable[state, action] + alpha * (reward + gamma * 
                                     np.max(qtable[new_state, :]) - qtable[state, action])
                 
-        # Our new state is state
+        #new state is state
         state = new_state
         
         # If done : finish episode
@@ -92,7 +84,6 @@ for episode in range(total_test_episodes):
     done = False
     total_rewards = 0
     #os.system("clc||clear")
-    #time.sleep(1)
     #print("****************************************************")
     #print("EPISODE ", episode)
 
@@ -124,7 +115,7 @@ plt.legend((line_1, line_2), (u'Result', u'Linear Approximation'), loc='upper le
 #plt.title('Зависимость суммарного вознаграждения от пройденного времени\n при N='+str(total_episodes) + ', gamma=' + str(gamma)+', alpha='+str(alpha)+', epsilon='+str(round(epsilon,2)), fontsize=10)
 plt.xlabel('Время', fontsize=10)
 plt.ylabel('Суммарное вознаграждение', fontsize=10)
-graphic_name = 'withoutlayreward2_gamma1,0'
+graphic_name = 'new_result_1'
 #graphic_name = 'withoutlayreward_N' + str(total_episodes)+ 'gamma' + str(gamma)+ 'alpha'+str(alpha)+'epsilon'+str(epsilon)
 plt.grid()
 plt.savefig(graphic_name)
